@@ -4,11 +4,12 @@ import 'package:flypee/flyepee_game.dart';
 
 import 'card/card.dart';
 
-class WastePile extends PositionComponent  implements Pile{
+class WastePile extends PositionComponent with HasGameRef<FlypeeGame> implements Pile {
   WastePile({super.position}): super(size: FlypeeGame.cardSize);
 
   final List<Card> _cards = [];
 
+  @override
   void acquireCard(Card card) {
     assert(card.isFaceUp);
     card.position = position;
@@ -26,7 +27,8 @@ class WastePile extends PositionComponent  implements Pile{
     for(var i = 0; i < n; i++) {
       _cards[i].position = position;
     }
-
+    // Above lines are need for both 1 and 3 draw
+    if(game.flypeeDraw == 1) return;
     if(n == 2) {
       _cards[1].position.add(_fanOffset);
     } else if(n >= 3) {
@@ -56,7 +58,8 @@ class WastePile extends PositionComponent  implements Pile{
 
   @override
   void returnCard(Card card) {
-    card.priority = _cards.indexOf(card);
+    final index = _cards.indexOf(card);
+    card.priority = index;
     _fanOutTopCards();
   }
 }

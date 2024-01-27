@@ -8,11 +8,12 @@ import 'package:flypee/flyepee_game.dart';
 
 import 'card/card.dart';
 
-class StockPile extends PositionComponent with TapCallbacks implements Pile {
+class StockPile extends PositionComponent with TapCallbacks, HasGameRef<FlypeeGame> implements Pile {
   StockPile({super.position}) : super(size: FlypeeGame.cardSize);
 
   final List<Card> _cards = [];
 
+  @override
   void acquireCard(Card card) {
     assert(card.isFaceDown);
     card.position = position;
@@ -31,7 +32,7 @@ class StockPile extends PositionComponent with TapCallbacks implements Pile {
         acquireCard(card);
       });
     } else {
-      for (var i = 0; i < 3; i++) {
+      for (var i = 0; i < game.flypeeDraw; i++) {
         if (_cards.isNotEmpty) {
           final card = _cards.removeLast();
           card.flip();

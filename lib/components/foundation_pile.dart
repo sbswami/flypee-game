@@ -15,6 +15,7 @@ class FoundationPile extends PositionComponent implements Pile {
       : suit = Suit.fromInt(intSuit),
         super(size: FlypeeGame.cardSize);
 
+  @override
   void acquireCard(Card card) {
     assert(card.isFaceUp);
     card.position = position;
